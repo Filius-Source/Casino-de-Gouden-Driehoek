@@ -2,6 +2,9 @@ import os
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
+# Blijf (voor)naam vragen tot invoer correct is en uitsluitend bestaat uit letters en spaties,
+# om een juiste begroeting mogelijk te maken
+
 while True:
     Voornaam = input("Wat is je voornaam: ").strip()
     os.system("cls" if os.name == "nt" else "clear")
@@ -10,6 +13,10 @@ while True:
     print("Vul een voornaam in met alleen letters en spaties.")
 Voornaam = Voornaam[:1].upper() + Voornaam[1:]
 
+
+# Blijf (achter)naam vragen tot invoer correct is en uitsluitend bestaat uit letters en spaties,
+# om een juiste begroeting mogelijk te maken
+
 while True:
     Achternaam = input("Wat is je achternaam: ").strip()
     os.system("cls" if os.name == "nt" else "clear")
@@ -17,6 +24,10 @@ while True:
         break
     print("Vul een achternaam in met alleen letters en spaties.")
 Achternaam = Achternaam[:1].upper() + Achternaam[1:]
+
+
+#Blijf vragen om een correcte invoer van een datum volgens (dd-mm-jjjj) om een leeftijdscheck te kunnen uitvoeren
+# voor minderjarigen die geen toegang mogen hebben
 
 while True:
     Geboortedatum = input("Wat is je geboortedatum (dd-mm-jjjj): ").strip()
@@ -37,6 +48,10 @@ if Leeftijd < 18:
     print("Sorry, maar je bent nog niet oud genoeg. We zien je graag terug als je 18 bent")
     raise SystemExit
 
+
+# Blijf vragen om een correctie invoer van geslacht om een juiste aanspreekvorm te gebruiken
+# waarbij er geen hoofdlettergevoeligheid getoetst wordt bij de input
+
 while True:
     Geslacht = input("Wat is je geslacht (Man, Vrouw of Non-binair): ").strip().upper()
     os.system("cls" if os.name == "nt" else "clear")
@@ -52,6 +67,10 @@ else:
     Welkomstbericht = f"Beste {Voornaam} {Achternaam}, Welkom bij casino De Gouden Driehoek"
 
 print(Welkomstbericht)
+
+
+# Invoer controleren op normale euro bedragen, waarmee gerekend kan worden om tot een juist
+#  budget overzicht te komen
 
 while True:
     BudgetInvoer = input("Wat is je budget (€): ").strip().replace(",", ".")
@@ -73,6 +92,9 @@ Gokbelasting = (Budget * Decimal("0.05")).quantize(
 )
 VasteKosten = Toegangskaartje + Drankje + OmwisselenSpeelchips + Gokbelasting
 Speelsaldo = Budget - VasteKosten
+
+
+# Opmaak budget overzicht
 
 print("\nOverzicht speelsaldo")
 print("-" * 45)
