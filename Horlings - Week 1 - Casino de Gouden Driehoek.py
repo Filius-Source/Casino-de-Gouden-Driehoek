@@ -1,7 +1,6 @@
 import os
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
-from pickletools import read_long1
 
 while True:
     Voornaam = input("Wat is je voornaam: ").strip()
