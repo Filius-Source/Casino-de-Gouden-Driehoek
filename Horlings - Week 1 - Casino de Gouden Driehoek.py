@@ -2,9 +2,7 @@ import os
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
-# Blijf (voor)naam vragen tot invoer correct is en uitsluitend bestaat uit letters en spaties,
-# om een juiste begroeting mogelijk te maken
-
+# Vraag de voornaam tot deze alleen letters en spaties bevat.
 while True:
     Voornaam = input("Wat is je voornaam: ").strip()
     os.system("cls" if os.name == "nt" else "clear")
@@ -14,9 +12,7 @@ while True:
 Voornaam = Voornaam[:1].upper() + Voornaam[1:]
 
 
-# Blijf (achter)naam vragen tot invoer correct is en uitsluitend bestaat uit letters en spaties,
-# om een juiste begroeting mogelijk te maken
-
+# Vraag de achternaam tot deze alleen letters en spaties bevat.
 while True:
     Achternaam = input("Wat is je achternaam: ").strip()
     os.system("cls" if os.name == "nt" else "clear")
@@ -26,20 +22,25 @@ while True:
 Achternaam = Achternaam[:1].upper() + Achternaam[1:]
 
 
-#Blijf vragen om een correcte invoer van een datum volgens (dd-mm-jjjj) om een leeftijdscheck te kunnen uitvoeren
-# voor minderjarigen die geen toegang mogen hebben
-
+# Vraag een bestaande geboortedatum in de vorm dd-mm-jjjj.
 while True:
     Geboortedatum = input("Wat is je geboortedatum (dd-mm-jjjj): ").strip()
     os.system("cls" if os.name == "nt" else "clear")
+
+    # Bij een verkeerd formaat beginnen we direct opnieuw met vragen.
+    if len(Geboortedatum) != 10:
+        print("Ongeldige datum. Gebruik dd-mm-jjjj, bijvoorbeeld 14-11-2000.")
+        continue
+
     try:
-        if len(Geboortedatum) != 10:
-            raise ValueError
         GeboortedatumDatum = datetime.strptime(Geboortedatum, "%d-%m-%Y").date()
-        break
     except ValueError:
         print("Ongeldige datum. Gebruik dd-mm-jjjj, bijvoorbeeld 14-11-2000.")
+        continue
 
+    break
+
+# Bereken de leeftijd. Trek een jaar af als de verjaardag nog moet komen.
 Vandaag = date.today()
 Leeftijd = Vandaag.year - GeboortedatumDatum.year
 if (Vandaag.month, Vandaag.day) < (GeboortedatumDatum.month, GeboortedatumDatum.day):
@@ -49,9 +50,7 @@ if Leeftijd < 18:
     raise SystemExit
 
 
-# Blijf vragen om een correctie invoer van geslacht om een juiste aanspreekvorm te gebruiken
-# waarbij er geen hoofdlettergevoeligheid getoetst wordt bij de input
-
+# Vraag M, V of N. Kleine letters worden omgezet naar hoofdletters.
 while True:
     Geslacht = input("Wat is je geslacht (Man, Vrouw of Non-binair): ").strip().upper()
     os.system("cls" if os.name == "nt" else "clear")
@@ -69,21 +68,27 @@ else:
 print(Welkomstbericht)
 
 
-# Invoer controleren op normale euro bedragen, waarmee gerekend kan worden om tot een juist
-#  budget overzicht te komen
-
+# Vraag een eurobedrag. Zowel een komma als een punt is toegestaan.
 while True:
     BudgetInvoer = input("Wat is je budget (€): ").strip().replace(",", ".")
     os.system("cls" if os.name == "nt" else "clear")
     print(Welkomstbericht)
+
+    # Het bedrag mag alleen cijfers en hoogstens één punt bevatten.
+    if not BudgetInvoer.replace(".", "", 1).isdigit():
+        print("Vul een geldig eurobedrag in, bijvoorbeeld 25,50.")
+        continue
+
+    # Rond af op centen. Kan het bedrag niet worden verwerkt, vraag het opnieuw.
     try:
-        if not BudgetInvoer.replace(".", "", 1).isdigit():
-            raise InvalidOperation
         Budget = Decimal(BudgetInvoer).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        break
     except InvalidOperation:
         print("Vul een geldig eurobedrag in, bijvoorbeeld 25,50.")
+        continue
 
+    break
+
+# Trek de vaste kosten en 5% gokbelasting van het budget af.
 Toegangskaartje = Decimal("5.00")
 Drankje = Decimal("2.50")
 OmwisselenSpeelchips = Decimal("2.00")
@@ -94,8 +99,7 @@ VasteKosten = Toegangskaartje + Drankje + OmwisselenSpeelchips + Gokbelasting
 Speelsaldo = Budget - VasteKosten
 
 
-# Opmaak budget overzicht
-
+# Toon het budget, de totale kosten en het overgebleven speelsaldo.
 print("\nOverzicht speelsaldo")
 print("-" * 45)
 print(f"{'Omschrijving':<30}{'Bedrag':>15}")
