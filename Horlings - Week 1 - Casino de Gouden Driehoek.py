@@ -2,6 +2,9 @@ import os
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
+from roulette import SpeelRoulette
+
+
 # Vraag de voornaam tot deze alleen letters en spaties bevat.
 while True:
     Voornaam = input("Wat is je voornaam: ").strip()
@@ -115,5 +118,19 @@ print("-" * 45)
 
 if Speelsaldo <= 0:
     print("Je budget is te laag om te spelen.")
-else:
-    print("Veel speelplezier!")
+    raise SystemExit
+
+print("Veel speelplezier!")
+
+# Vraag pas na alle toegangscontroles of de speler Roulette wil spelen.
+while True:
+    RouletteKeuze = input("Wil je Roulette spelen? J/N: ").strip().upper()
+    if RouletteKeuze in ("J", "N"):
+        break
+    print("Ongeldige invoer. Kies J of N.")
+
+# Geef bij Ja het saldo en de namen mee. Bewaar het saldo dat het spel teruggeeft.
+if RouletteKeuze == "J":
+    Speelsaldo = SpeelRoulette(Speelsaldo, Voornaam, Achternaam)
+
+# Voeg hieronder later de keuze voor andere spellen uit aparte bestanden toe.
